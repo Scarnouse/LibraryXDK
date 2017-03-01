@@ -18,8 +18,10 @@
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+        <script src="cordova.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript" src="js/books.js"></script>
+        <script type="text/javascript" src="js/loan.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="stylesheet" href="css/index.css">
 
@@ -37,25 +39,17 @@
 
             <div id="reader" class="col s12">
 
-			  <ul id='dropdown1' class='dropdown-content dropdown-menu-center'>
-				<li><a onclick="printFormCreateReader()">Crear</a></li>
-				<li><a id="buttonUpdate" onclick="printFormUpdateReader()">Editar</a></li>
-				<li class="divider"></li>
-				<li><a href="#!">Borrar</a></li>
-			  </ul>
-
             </div>
             <div id="book" class="col s12">
 
-              <ul id='dropdown2' class='dropdown-content dropdown-menu-center'>
-				<li><a onclick="printFormCreateBook()">Crear</a></li>
-				<li><a id="idBook" onclick="printFormUpdateBook()">Editar</a></li>
-				<li class="divider"></li>
-				<li><a onclick="deleteBook()">Borrar</a></li>
-			  </ul>
-
             </div>
-            <div id="loan" class="col s12"></div>
+            <div id="loan" class="col s12">
+                <button style="margin: 4%" class="btn waves-effect waves-light col s5">Prestamo</button>
+                <button style="margin: 4%" class="btn waves-effect waves-light col s5">Devolución</button>
+                <div id="taken" class="col s12">
+
+                </div>
+            </div>
         </div>
     </body>
 </html>

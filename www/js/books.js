@@ -1,11 +1,11 @@
 /*jslint browser:true, devel:true, white:true, vars:true */
 /*global $:false, intel:false */
 
-$(document).ready(function () {
+/*$(document).ready(function () {
     getBooks();
-});
+});*/
 
-var HOST = "http://localhost:8080/";
+var HOST = "http://35.163.178.255:80/";
 var URL = "LibraryRESTGF/webresources/entity.book/";
 
 function getBooks() {
