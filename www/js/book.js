@@ -1,20 +1,13 @@
 /*jslint browser:true, devel:true, white:true, vars:true */
 /*global $:false, intel:false */
 
-/*$(document).ready(function () {
-    getBooks();
-});*/
-
-var HOST = "http://35.163.178.255:80/";
-var URL = "LibraryRESTGF/webresources/entity.book/";
-
 function getBooks() {
     $.ajax({
-        url: HOST + URL,
+        url: HOST_BOOK + URL_BOOK,
         type: 'GET',
         dataType: 'JSON',
         success: function (data) {
-            var table = $('<table/>');
+            var table = $('<table class="striped bordered"/>');
 
             var tr = $('<thead/>').append('<tr/>');
             tr.append('<th data-field="isbn">ISBN</th>');
@@ -66,7 +59,7 @@ function getBooks() {
         },
 
         error: function () {
-            $('#book').html('ERROR');
+            $('#book').html('Error en el servidor');
         }
     });
 }
@@ -167,7 +160,7 @@ function printFormUpdateBook() {
     var idBook = $('#idBook').val();
 
     $.ajax({
-        url: HOST+URL+idBook,
+        url: HOST_BOOK + URL_BOOK + idBook,
         type: 'GET',
         dataType: 'JSON',
         success: function(data) {
@@ -198,7 +191,7 @@ function postBook() {
             "Accept" : 'application/json',
             "Content-Type" : "application/json"
         },
-		url: "http://localhost:8080/LibraryRESTGF/webresources/entity.book",
+		url: HOST + URL,
 		type: "POST",
         data : JSON.stringify(book),
 		dataType: "JSON",
@@ -218,7 +211,7 @@ function putBook(book) {
             "Accept" : 'application/json',
             "Content-Type" : "application/json"
         },
-		url: HOST + URL + book.id,
+		url: HOST_BOOK + URL_BOOK + book.id,
 		type: "PUT",
         data : JSON.stringify(book),
 		dataType: "JSON",
@@ -238,7 +231,7 @@ function deleteBook(){
     var idBook = $('#idBook').val();
 
     $.ajax({
-		url: HOST + URL + idBook,
+		url: HOST_BOOK + URL_BOOK + idBook,
 		type: "DELETE",
 		dataType: "JSON",
 		success: function(data) {
