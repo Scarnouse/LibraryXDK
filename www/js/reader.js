@@ -1,12 +1,11 @@
 /*jslint browser:true, devel:true, white:true, vars:true */
 /*global $:false, intel:false */
-
 function getReaders() {
 
     $.ajax({
-        url: HOST_READER + URL_READER,
+        url: HOST + URL_READER,
         type: 'GET',
-        dataType: 'JSON',
+        dataType: 'json',
         success: function (data) {
 			printList(data);
         },
@@ -74,7 +73,6 @@ function printList(data) {
 	);
 }
 
-
 function changeMenuValue(id) {
     $('#buttonUpdate').val(id);
 	$('#buttonDelete').val(id);
@@ -102,7 +100,6 @@ function printForm(reader) {
     divName.append(i);
     divName.append(name);
     divName.append(label);
-
 
     var divLastName = $('<div class = "input-field col s12"></div>');
     i = $('<i class="material-icons prefix">person_pin</i>');
@@ -136,7 +133,6 @@ function printForm(reader) {
     form.append(submit);
 
     div.append(form);
-
 
     $('#reader').append(div);
 		var input = $('.datepicker').pickadate({
@@ -172,22 +168,20 @@ function printForm(reader) {
 	}
 }
 
-
 function printFormUpdateReader() {
 
     var idReader = $('#buttonUpdate').val();
 
     $.ajax({
-        url: HOST + URL + idReader,
+        url: HOST + URL_READER + idReader,
         type: 'GET',
-        dataType: 'JSON',
+        dataType: 'json',
         success: function(data) {
             printForm(data);
         },
         error: function(err) {
             console.log(err);
         }
-
     });
 
 }
@@ -213,7 +207,7 @@ function postReader() {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
     	},
-		url: HOST_READER + URL_READER,
+		url: HOST + URL_READER,
 		type: 'POST',
 		dataType: 'json',
 		data: JSON.stringify(reader),
@@ -224,8 +218,6 @@ function postReader() {
 			console.log(err);
 		}
 	});
-
-
 }
 
 function putReader(reader) {
@@ -244,9 +236,9 @@ function putReader(reader) {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
     	},
-		url: HOST_READER + URL_READER + reader.id,
+		url: HOST + URL_READER + reader.id,
 		type: "PUT",
-		dataType: "JSON",
+		dataType: "json",
 		data: JSON.stringify(putReader),
 		success: function(data) {
 			getReaders();
@@ -265,7 +257,7 @@ function deleteReader() {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
     	},
-		url: HOST_READER + URL_READER + idReader,
+		url: HOST + URL_READER + idReader,
 		type: "DELETE",
 		success: function(data) {
 			getReaders();
@@ -274,5 +266,4 @@ function deleteReader() {
 			console.log(err);
 		}
 	});
-
 }

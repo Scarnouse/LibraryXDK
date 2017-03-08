@@ -3,9 +3,9 @@
 
 function getBooks() {
     $.ajax({
-        url: HOST_BOOK + URL_BOOK,
+        url: HOST + URL_BOOK,
         type: 'GET',
-        dataType: 'JSON',
+        dataType: 'json',
         success: function (data) {
             var table = $('<table class="striped bordered"/>');
 
@@ -19,7 +19,7 @@ function getBooks() {
             var tbody = $('<tbody/>');
 
             for (item of data) {
-                var tRow = $("<tr class='dropdown-button' href='#' data-activates='dropdown2' onclick='changeMenuUpdateValue("+ item.id + ")'></tr>");
+                var tRow = $("<tr class='dropdown-button' href='#' data-activates='dropBooks' onclick='changeMenuUpdateValue("+ item.id + ")'></tr>");
 
                 tRow.append('<td>' + item.isbn + '</td>');
                 tRow.append('<td>' + item.title + '</td>');
@@ -28,7 +28,7 @@ function getBooks() {
                 tbody.append(tRow);
             }
 
-            var ul = $('<ul id="dropdown2" class="dropdown-content dropdown-menu-center"></ul>');
+            var ul = $('<ul id="dropBooks" class="dropdown-content dropdown-menu-center"></ul>');
             var create = $('<li><a onclick="printFormCreateBook()">Crear</a></li>');
             var edit = $('<li><a id="idBook" onclick="printFormUpdateBook()">Editar</a></li>');
             var divider = $('<li class="divider"></li>');
@@ -70,11 +70,11 @@ function changeMenuUpdateValue(id) {
 
 function printFormCreateBook() {
     $('#book').empty();
-    printForm();
+    printFormBook();
 
 }
 
-function printForm(book) {
+function printFormBook(book) {
 
     var div = $('<div class = "row"></div>');
     var form = $('<div class = "col s12"></div>');
@@ -126,6 +126,8 @@ function printForm(book) {
 
     if (book !== undefined) {
 
+        console.log(book);
+
 		$('#isbn').val(book.isbn);
         $('#title').val(book.title);
         $('#author').val(book.author);
@@ -160,12 +162,12 @@ function printFormUpdateBook() {
     var idBook = $('#idBook').val();
 
     $.ajax({
-        url: HOST_BOOK + URL_BOOK + idBook,
+        url: HOST + URL_BOOK + idBook,
         type: 'GET',
-        dataType: 'JSON',
+        dataType: 'json',
         success: function(data) {
             $('#book').empty();
-            printForm(data);
+            printFormBook(data);
         },
         error: function(err) {
             $('#book').html(JSON.stringify(err));
@@ -191,10 +193,9 @@ function postBook() {
             "Accept" : 'application/json',
             "Content-Type" : "application/json"
         },
-		url: HOST + URL,
+		url: HOST + URL_BOOK,
 		type: "POST",
         data : JSON.stringify(book),
-		dataType: "JSON",
 		success: function(data) {
             $("#book").empty();
             getBooks();
@@ -206,21 +207,28 @@ function postBook() {
 }
 
 function putBook(book) {
+
+    var b = {
+        id: book.id,
+		isbn: $('#isbn').val(),
+		title: $('#title').val(),
+		author: $('#author').val()
+    }
+
     $.ajax({
         headers :{
             "Accept" : 'application/json',
             "Content-Type" : "application/json"
         },
-		url: HOST_BOOK + URL_BOOK + book.id,
+		url: HOST + URL_BOOK + book.id,
 		type: "PUT",
-        data : JSON.stringify(book),
-		dataType: "JSON",
+        data : JSON.stringify(b),
 		success: function(data) {
 		    $("#book").empty();
             getBooks();
 		},
 		error: function(err) {
-		  $('#book').html(JSON.stringify(err));
+            $('#book').html(JSON.stringify(err));
 		}
 	});
 
@@ -231,9 +239,8 @@ function deleteBook(){
     var idBook = $('#idBook').val();
 
     $.ajax({
-		url: HOST_BOOK + URL_BOOK + idBook,
+		url: HOST + URL_BOOK + idBook,
 		type: "DELETE",
-		dataType: "JSON",
 		success: function(data) {
 		    $("#book").empty();
             getBooks();
