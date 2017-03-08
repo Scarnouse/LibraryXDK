@@ -1,39 +1,37 @@
-Blank HTML Template for Building Packaged Mobile Web Apps
+#Library REST
 =========================================================
 
-Copyright © 2012-2015, Intel Corporation. All rights reserved.
+Este proyecto es un cliente REST dirigido hacia una librería o biblioteca. La idea principal es que el librero/bibliotecario tenga acceso al CRUD de usuarios, CRUD de libros y la gestión de las devoluciones y préstamos de estos.
 
-See [LICENSE.md](<LICENSE.md>) for license terms and conditions.
+## Tecnología usada
 
-This Intel XDK project has just an `index.html` file with the basic html, head
-and body tags required for building HTML5 mobile web apps. Use this template to
-create a *packaged mobile web app* that does not use any device features.
+Se ha implementado el servicio REST como un servlet Java que corre sobre GlashFish usando como persistencia MySQL.
 
-The `icon.png` and `screenshot.png` files are not required by your project. They
-are included for use by the Intel XDK template/demo panel and have no use within
-a real app. You can safely delete them from your project directory.
+El cliente está programado en HTML5 y JavaScript, usando JQuery para la gestión de las peticiones a través de objetos JSON.
 
-You can build a *packaged Cordova web app* that can be submitted to a store
-using the "Cordova Hybrid Mobile App Platforms” build tiles (for Crosswalk,
-Android, iOS and Windows). The `intelxdk.config.additions.xml` file can be used
-to include options that control your *packaged Cordova web app* builds. For
-example, you can set the splash screen display time for a packaged Android or
-Crosswalk Cordova app using this file.
+### Casos de uso
 
-If you convert (or upgrade) your "Standard HTML5 Project" into a "Standard
-HTML5 + Cordova Project" you must comment out the noted script files
-inside the provided index.html file.
+El librero (actor) podrá tener acceso a la gestión de lectores, libros y prestamos. Como se puede observar en el diagrama de casos de uso sobre lectores y libros puede realizar un CRUD completo, pero en el caso de prestamos tan sólo tiene acceso a un listado con los libros prestados, a quien han sidos prestados y en qué fecha; la acción de prestar el libro y la acción de devolver el libro. No hemos incluido borrar un préstamos porque pensamos que con esas dos acciones podemos cubrir las necesidades del librero.
 
-The `cordova.js` script will be needed if you choose to convert your project to
-a *Cordova project* and enhance your app with Cordova APIs. It is not required
-to build a *Cordova packaged web app* for distribution via the Android, iOS and
-Windows stores *if that app does not utilize Cordova APIs*.
+![](casos_uso.png)
 
-This blank template does not require any Cordova APIs. If you would like to add
-Cordova APIs to your application (via Cordova plugins) you must first convert
-your project into a Cordova project. You can do this by clicking the Cordova
-icon in the *Project Info* section on the **Projects** tab. Or, you can create a
-new Cordova project using a Cordova blank template or a Cordova demo or sample
-app as a starting point.
-# LibraryREST
-# LibraryREST
+### Diagrama Entidad/Relación
+
+En este mostramos el diseño previo a la realización de la BD. Hemos pensado que la relación sería de 1 a n dado a que un usuario puede tener muchos libros pero un libro no puede ser tenido por muchos usuarios.
+
+![](entidad_relacion.png)
+
+### Diagrama de clases
+
+Este muestra el diseño UML del POJO usado. Hemos pensado que las clases están asociadas * a 1 ya que Book tiene como atributo un Reader y Reader tiene como atributo una colección de Book. Esto parte también del diseño de la propia BD.
+
+![](diagrama_clases.png)
+
+#### Instalación
+
+Este programa puede ser clonado directamente desde GitHub y usado para realizar un deploy en un servidor GlashFish.
+
+
+
+
+
