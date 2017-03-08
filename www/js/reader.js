@@ -1,11 +1,12 @@
 /*jslint browser:true, devel:true, white:true, vars:true */
 /*global $:false, intel:false */
+
 function getReaders() {
 
     $.ajax({
         url: HOST + URL_READER,
         type: 'GET',
-        dataType: 'json',
+        dataType: 'JSON',
         success: function (data) {
 			printList(data);
         },
@@ -135,7 +136,8 @@ function printForm(reader) {
     div.append(form);
 
     $('#reader').append(div);
-		var input = $('.datepicker').pickadate({
+
+	var input = $('.datepicker').pickadate({
 		selectMonths: true,
 		selectYears: 15,
 		format: 'yyyy-mm-dd'
@@ -150,8 +152,6 @@ function printForm(reader) {
 		var date = dateConverter(reader.birthday);
 
         $('#birthday').val(date);
-
-		console.log(date)
 
 		$(document).ready(function() {
 			Materialize.updateTextFields();
@@ -175,7 +175,7 @@ function printFormUpdateReader() {
     $.ajax({
         url: HOST + URL_READER + idReader,
         type: 'GET',
-        dataType: 'json',
+        dataType: 'JSON',
         success: function(data) {
             printForm(data);
         },
@@ -183,7 +183,6 @@ function printFormUpdateReader() {
             console.log(err);
         }
     });
-
 }
 
 function dateConverter(date) {
@@ -208,14 +207,13 @@ function postReader() {
 			'Content-Type': 'application/json'
     	},
 		url: HOST + URL_READER,
-		type: 'POST',
-		dataType: 'json',
+		type: 'post',
 		data: JSON.stringify(reader),
 		success: function(data) {
 			getReaders();
 		},
 		error: function(err) {
-			console.log(err);
+			$('#reader').html(JSON.stringify(err));
 		}
 	});
 }
@@ -238,7 +236,6 @@ function putReader(reader) {
     	},
 		url: HOST + URL_READER + reader.id,
 		type: "PUT",
-		dataType: "json",
 		data: JSON.stringify(putReader),
 		success: function(data) {
 			getReaders();
@@ -267,3 +264,4 @@ function deleteReader() {
 		}
 	});
 }
+

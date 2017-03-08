@@ -53,7 +53,7 @@ function scan(method){
 
      cordova.plugins.barcodeScanner.scan(function(result){
             if(method==="loan")
-                loanBook(result.text);
+                isBook(result.text);
             else if(method==="return"){
                 isLoan(result.text);
             }
@@ -88,27 +88,118 @@ function setBookForLoan(book){
     book.loanDate = undefined;
     book.idReaderFk = undefined;
 
-    $('#taken').html(JSON.stringify(book));
-
-    $ajax({
+    $.ajax({
         headers:{
-            "Accept" : "application/json",
+            "Accept" : "text",
             "Content-Type" : "application/json"
         },
         url : HOST + URL_BOOK + JSON.stringify(book.id),
         type : "PUT",
         data : JSON.stringify(book),
-        dataType : "json",
         success : function(data){
-            $("#taken").empty();
             getTakenBooks();
         },
         error : function(err){
             Materialize.toast(JSON.stringify(err), 4000);
         }
     });
+
 }
 
+function isBook(result){
+    $.ajax({
+        url : HOST + URL_BOOK + "isbn/" + result,
+        type: 'GET',
+        dataType: 'JSON',
+        success: function(data){
+			readerSelector(data);
+        },
+        error: function(){
+			Materialize.toast('El libro no está registrado en la BD', 4000)
+        }
+    });
+}
+
+function readerSelector(book) {
+	var loan = $('#loan');
+	loan.empty();
+
+	var div = $('<div class = "row">');
+    var form = $('<div class = "col s12">');
+	var divLoanDate = $('<div class="input-field col s12">');
+	var i = $('<i class="material-icons prefix">perm_contact_calendar</i>');
+	var loanDate = $('<input id="loanDate" type="date" class="datepicker">');
+    var label = $('<label for="birthday">Fecha de préstamo</label>');
+
+	divLoanDate.append(i);
+    divLoanDate.append(loanDate);
+    divLoanDate.append(label);
+
+	form.append(divLoanDate)
+	div.append(form);
+
+	loan.append(form);
+
+
+	$('.datepicker').pickadate({
+		selectMonths: true,
+		selectYears: 15,
+		format: 'yyyy-mm-dd'
+	});
+
+	$(document).ready(function() {
+		Materialize.updateTextFields();
+	});
+
+	var div = $('<div class="collection">')
+
+	$.ajax({
+        url: HOST + URL_READER,
+        type: 'GET',
+        dataType: 'JSON',
+        success: function (data) {
+			var aHeader = $('<a class="collection-item active">Selecciona un lector</a>');
+			div.append(aHeader);
+
+			for (item of data) {
+				var a = $('<a class="collection-item">' + item.name + '</a>');
+				$(a).click({param1: item, param2: book}, putTakenBook);
+				div.append(a);
+			}
+			loan.append(div);
+			loan.append('<button class="waves-effect waves-light btn" onclick="getTakenBooks()">Volver</button>')
+        },
+
+        error: function (err) {
+           console.log(err);
+        }
+    });
+}
+
+function putTakenBook(event) {
+
+	var reader = event.data.param1;
+	var book = event.data.param2;
+
+	book.idReaderFk = reader;
+	book.loanDate = new Date(Date.parse($('#loanDate').val(), 'YYYY-MM-DD'));
+
+    $.ajax({
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+    	},
+		url: HOST + URL_BOOK + book.id,
+		type: "PUT",
+        data : JSON.stringify(book),
+		success: function(data) {
+            getTakenBooks();
+		},
+		error: function(err) {
+		  	Materialize.toast('Error inesperado', 4000);
+		}
+	});
+}
 
 function dateConverter(date) {
 	var array = date.split('T');
